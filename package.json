@@ -1,0 +1,147 @@
+{
+  "name": "kyte-vscode",
+  "displayName": "Kyte Language",
+  "description": "VS Code support for the Kyte programming language",
+  "version": "1.0.0",
+  "publisher": "kyte-lang",
+  "license": "Apache-2.0",
+  "icon": "icons/kyte-icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kytelang/kyte-vscode-extension.git"
+  },
+  "homepage": "https://github.com/kytelang/kyte-vscode-extension#readme",
+  "bugs": {
+    "url": "https://github.com/kytelang/kyte-vscode-extension/issues"
+  },
+  "keywords": [
+    "kyte",
+    "kyx",
+    "language",
+    "syntax",
+    "highlighting",
+    "hypermedia",
+    "lsp"
+  ],
+  "galleryBanner": {
+    "color": "#1e1e2e",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:kyte"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "Kyte",
+      "properties": {
+        "kyte.server.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the Kyte language server (diagnostics, completion, hover, navigation). When off, only syntax highlighting, icons and the run command are active."
+        },
+        "kyte.server.path": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the kynalyzer language-server binary. Leave empty to auto-detect: PATH first, then ~/.kyte/bin/kynalyzer. A leading ~ is expanded to your home directory."
+        },
+        "kyte.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Trace the communication between VS Code and the Kyte language server in the output channel."
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "kyte",
+        "aliases": [
+          "Kyte",
+          "kyte"
+        ],
+        "extensions": [
+          ".ky",
+          ".kyx"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/kyte-light.svg",
+          "dark": "./icons/kyte-dark.svg"
+        }
+      }
+    ],
+    "iconThemes": [
+      {
+        "id": "kyte-icons",
+        "label": "Kyte Icons",
+        "path": "./fileicons/kyte-icon-theme.json"
+      }
+    ],
+    "breakpoints": [
+      {
+        "language": "kyte"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "kyte",
+        "scopeName": "source.ky",
+        "path": "./syntaxes/kyte.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "kyte",
+        "path": "./snippets/kyte.json"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "kyte.runFile",
+        "key": "ctrl+shift+r",
+        "when": "editorLangId == kyte"
+      }
+    ],
+    "commands": [
+      {
+        "command": "kyte.runFile",
+        "title": "Kyte: Run Current File"
+      },
+      {
+        "command": "kyte.restartServer",
+        "title": "Kyte: Restart Language Server"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "test:grammar": "vscode-tmgrammar-test -g syntaxes/kyte.tmLanguage.json \"tests/grammar/*.ky\" \"tests/grammar/*.kyx\"",
+    "package": "vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0",
+    "vscode-tmgrammar-test": "^0.1.3"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "iconDefinitions": {
+    "kyte": { "iconPath": "../icons/kyte-dark.svg" },
+    "kyte_light": { "iconPath": "../icons/kyte-light.svg" },
+    "_file": { "iconPath": "../icons/default-file.svg" },
+    "_folder": { "iconPath": "../icons/default-folder.svg" },
+    "_folder_open": { "iconPath": "../icons/default-folder-open.svg" }
+  },
+  "file": "_file",
+  "folder": "_folder",
+  "folderExpanded": "_folder_open",
+  "languageIds": {
+    "kyte": "kyte"
+  },
+  "fileExtensions": {
+    "ky": "kyte",
+    "kyx": "kyte"
+  },
+  "light": {
+    "file": "_file",
+    "folder": "_folder",
+    "folderExpanded": "_folder_open",
+    "fileExtensions": {
+      "ky": "kyte_light",
+      "kyx": "kyte_light"
+    },
+    "languageIds": {
+      "kyte": "kyte_light"
+    }
+  },
+  "hidesExplorerArrows": false
+}

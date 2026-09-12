@@ -1,0 +1,17 @@
+.vscode/**
+.git/**
+.github/**
+.gitignore
+.gitattributes
+.eslintrc.json
+ROADMAP-1.0.md
+tests/**
+src/**
+tsconfig.json
+**/*.map
+**/*.ts
+node_modules/.bin/**
+linguist-submission/**
+icons/marketplace.svg
+*.vsix
+.DS_Store

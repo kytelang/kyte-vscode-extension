@@ -1,0 +1,54 @@
+name: ci
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - name: Compile (tsc)
+        run: npm run compile
+      - name: Lint (eslint)
+        run: npm run lint
+      - name: Grammar snapshot tests (vscode-tmgrammar-test)
+        run: npm run test:grammar
+      - name: Package (.vsix)
+        run: npx --yes @vscode/vsce package --no-dependencies -o extension.vsix
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: extension.vsix
+
+  # Publish the built .vsix to both registries. Runs only on a version tag (v*), reuses the exact artifact
+  # the build job produced so the Marketplace and Open VSX get identical bytes, and skips each registry when
+  # its token secret is not configured (so the job never fails for a repo without publishing set up).
+  publish:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        with:
+          name: vsix
+      - name: Publish to VS Code Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        if: ${{ env.VSCE_PAT != '' }}
+        run: npx --yes @vscode/vsce publish --packagePath extension.vsix -p "$VSCE_PAT"
+      - name: Publish to Open VSX
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        if: ${{ env.OVSX_PAT != '' }}
+        run: npx --yes ovsx publish extension.vsix -p "$OVSX_PAT"

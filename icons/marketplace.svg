@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Marketplace icon: the Kyte diamond (3x3 rounded squares, purple to blue) with a teal square
+       tail, set on a dark rounded ground so it reads on the Marketplace listing. -->
+  <defs>
+    <linearGradient id="body" gradientUnits="userSpaceOnUse" x1="20" y1="94" x2="108" y2="10"
+                    gradientTransform="rotate(-45 64 48)">
+      <stop offset="0" stop-color="#7B2FF7"/>
+      <stop offset="0.5" stop-color="#4F5BE8"/>
+      <stop offset="1" stop-color="#2FA8F0"/>
+    </linearGradient>
+    <linearGradient id="tail" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2DD4BF"/>
+      <stop offset="1" stop-color="#0E7490"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" fill="#12122B"/>
+  <g transform="rotate(45 64 48)" fill="url(#body)">
+    <rect x="32.5" y="18.5" width="17" height="17" rx="4"/>
+    <rect x="55.5" y="18.5" width="17" height="17" rx="4"/>
+    <rect x="78.5" y="18.5" width="17" height="17" rx="4"/>
+    <rect x="32.5" y="41.5" width="17" height="17" rx="4"/>
+    <rect x="55.5" y="41.5" width="17" height="17" rx="4"/>
+    <rect x="78.5" y="41.5" width="17" height="17" rx="4"/>
+    <rect x="32.5" y="64.5" width="17" height="17" rx="4"/>
+    <rect x="55.5" y="64.5" width="17" height="17" rx="4"/>
+    <rect x="78.5" y="64.5" width="17" height="17" rx="4"/>
+  </g>
+  <g fill="url(#tail)">
+    <rect x="52" y="96" width="12" height="12" rx="3" transform="rotate(45 58 102)"/>
+    <rect x="42.5" y="106.5" width="10" height="10" rx="2.5" transform="rotate(45 47.5 111.5)"/>
+    <rect x="35" y="116" width="7.5" height="7.5" rx="2" transform="rotate(45 38.75 119.75)"/>
+  </g>
+</svg>

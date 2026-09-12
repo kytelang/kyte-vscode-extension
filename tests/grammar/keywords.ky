@@ -1,0 +1,45 @@
+// SYNTAX TEST "source.ky" "keywords, types, numbers, strings, comments"
+
+// this is a line comment
+// <- comment.line.double-slash.ky
+
+fn greet(): int {
+// <- keyword.declaration.ky
+    const total = 0
+//  ^^^^^ keyword.declaration.ky
+    let flag = true
+//  ^^^ keyword.declaration.ky
+//             ^^^^ constant.language.ky
+    return total
+//  ^^^^^^ keyword.control.ky
+}
+
+struct Point { x: int, y: int }
+// <- keyword.declaration.ky
+
+fn control() {
+    match flag {
+//  ^^^^^ keyword.control.ky
+        default => 0
+//      ^^^^^^^ keyword.control.ky
+    }
+    if flag { return }
+//  ^^ keyword.control.ky
+    await ready()
+//  ^^^^^ keyword.control.ky
+}
+
+fn numbers() {
+    let a = 255
+//          ^^^ constant.numeric.decimal.ky
+    let b = 0xFF
+//          ^^^^ constant.numeric.hex.ky
+    let c = 0o17
+//          ^^^^ constant.numeric.octal.ky
+    let d = 0b1010
+//          ^^^^^^ constant.numeric.binary.ky
+    let e = 1_000_000
+//          ^^^^^^^^^ constant.numeric.decimal.ky
+    let s = "hello"
+//          ^^^^^^^ string.quoted.double.ky
+}

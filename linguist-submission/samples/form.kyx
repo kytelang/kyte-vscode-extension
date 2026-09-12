@@ -1,0 +1,124 @@
+import string;
+import web.response;
+import list;
+import Domain.entities.cluster;
+import Features.ControlPlane.Shared.html;
+
+fn inputCls(): string {
+    return "w-full rounded-md border border-slate-300 px-2.5 py-1.5 text-sm text-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500";
+}
+
+fn textField(label: string, sig: string): string {
+    return <div><label class="block text-xs font-medium text-slate-500 mb-1">{label}</label><input data-bind={sig} class={inputCls()} /></div>;
+}
+
+fn readonlyField(label: string, sig: string): string {
+    return <div><label class="block text-xs font-medium text-slate-500 mb-1">{label}</label><input data-bind={sig} readonly="" class="w-full rounded-md border border-slate-300 bg-slate-100 px-2.5 py-1.5 text-sm text-slate-500" /></div>;
+}
+
+fn numField(label: string, sig: string): string {
+    return <div><label class="block text-xs font-medium text-slate-500 mb-1">{label}</label><input type="number" data-bind={sig} class={inputCls()} /></div>;
+}
+
+fn selectField(label: string, sig: string, vals: List<string>): string {
+    let opts = "";
+    let i = 0;
+    while (i < vals.size()) {
+        let v = vals.get(i) ?? "";
+        opts = opts + <option value={v}>{v}</option>;
+        i = i + 1;
+    }
+    return <div><label class="block text-xs font-medium text-slate-500 mb-1">{label}</label><select data-bind={sig} class={inputCls()}>{response.raw(opts)}</select></div>;
+}
+
+fn boolField(label: string, sig: string): string {
+    return <label class="flex items-center gap-2 text-sm text-slate-700"><input type="checkbox" data-bind={sig} class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" />{label}</label>;
+}
+
+fn card(title: string, inner: string): string {
+    return <section class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"><h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">{title}</h3>{response.raw(inner)}</section>;
+}
+
+fn grid(inner: string): string {
+    return <div class="grid grid-cols-2 gap-3">{response.raw(inner)}</div>;
+}
+
+fn opts2(a: string, b: string): List<string> {
+    let l = list.List<string>();
+    l.push(a);
+    l.push(b);
+    return l;
+}
+
+fn opts3(a: string, b: string, c: string): List<string> {
+    let l = opts2(a, b);
+    l.push(c);
+    return l;
+}
+
+fn opts4(a: string, b: string, c: string, d: string): List<string> {
+    let l = opts3(a, b, c);
+    l.push(d);
+    return l;
+}
+
+fn boolStr(b: bool): string {
+    return if (b) "true" else "false";
+}
+
+fn signals(sv: ServiceView): string {
+    return "{" + `svcName:'${html.jsq(sv.name)}', binary:'${html.jsq(sv.binary)}', restartPolicy:'${html.jsq(sv.restartPolicy)}', ` + `repMin:${sv.replicasMin}, repMax:${sv.replicasMax}, expose:'${html.jsq(sv.expose)}', ` + `servicePort:${sv.servicePort}, portBase:${sv.portBase}, portFlag:'${html.jsq(sv.portFlag)}', ` + `lbStrategy:'${html.jsq(sv.lbStrategy)}', handoff:${boolStr(sv.handoff)}, autoEnabled:${boolStr(sv.autoEnabled)}, ` + `metric:'${html.jsq(sv.metric)}', setpoint:${sv.setpoint}, healthPath:'${html.jsq(sv.healthPath)}', routes:'${html.jsq(sv.routesCsv)}', ` + "routeModal:false, newRoute:''" + "}";
+}
+
+fn trimS(s: string): string {
+    let a = 0;
+    let b = string.len(s);
+    while (a < b) {
+        let c = s[a];
+        if (c != 32 && c != 9) {
+            break;
+        }
+        a = a + 1;
+    }
+    while (b > a) {
+        let c = s[b - 1];
+        if (c != 32 && c != 9) {
+            break;
+        }
+        b = b - 1;
+    }
+    return string.slice(s, a, b);
+}
+
+fn routeChips(csv: string): string {
+    let chips = "";
+    let parts = string.split(csv, ",");
+    let i = 0;
+    while (i < parts.size()) {
+        let r = trimS(parts.get(i) ?? "");
+        if (!string.eql(r, "")) {
+            chips = chips + <span class="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700">{response.escapeHtml(r)}</span>;
+        }
+        i = i + 1;
+    }
+    if (string.eql(chips, "")) {
+        chips = <span class="text-xs italic text-slate-400">No routes yet</span>;
+    }
+    return chips;
+}
+
+fn routesField(sv: ServiceView): string {
+    return <div><label class="block text-xs font-medium text-slate-500 mb-1">Routes</label><div class="flex flex-wrap items-center gap-1.5 rounded-md border border-slate-300 p-2">{response.raw(routeChips(sv.routesCsv))}<button type="button" data-on:click="$routeModal = true" class="ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-700">+</button></div><p class="mt-1 text-xs text-slate-400">Pending:<span data-text="$routes" class="font-mono text-slate-600" /></p></div>;
+}
+
+fn routeModal(): string {
+    return <div data-show="$routeModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4"><div class="w-full max-w-sm rounded-xl bg-white p-5 shadow-xl"><h3 class="text-sm font-semibold text-slate-800">Add a route</h3><p class="mt-1 text-xs text-slate-500">An HTTP path this service handles.</p><input data-bind:newRoute="" placeholder="/api/example" class="mt-3 w-full rounded-md border border-slate-300 px-2.5 py-1.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500" /><div class="mt-4 flex justify-end gap-2"><button type="button" data-on:click="$routeModal = false" class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-50">Cancel</button><button type="button" data-on:click="$routes = ($routes ? $routes + ', ' : '') + $newRoute; $newRoute = ''; $routeModal = false" class="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-700">Add route</button></div></div></div>;
+}
+
+pub fn manifestForm(sv: ServiceView, nameLocked: bool, saveLabel: string): string {
+    let nameField = if (nameLocked) readonlyField("Service name", "svcName") else textField("Service name", "svcName");
+    let workload = <div class="space-y-3">{response.raw(grid(nameField + textField("Binary", "binary")))}{response.raw(grid(selectField("Restart policy", "restartPolicy", opts3("always", "on-failure", "never")) + textField("Health path", "healthPath")))}{response.raw(routesField(sv))}</div>;
+    let replicas = <div class="space-y-3">{response.raw(grid(numField("Min replicas", "repMin") + numField("Max replicas", "repMax") + selectField("Metric", "metric", opts2("inflight", "cpu")) + numField("Setpoint", "setpoint")))}{response.raw(boolField("Autoscale enabled", "autoEnabled"))}</div>;
+    let lb = <div class="space-y-3">{response.raw(grid(selectField("Strategy", "lbStrategy", opts4("roundrobin", "weighted", "leastconn", "consistenthash")) + numField("Service port", "servicePort")))}{response.raw(boolField("fd-handoff data path (app has no listening port)", "handoff"))}</div>;
+    return <form data-signals={signals(sv)} data-on:submit="@post('/api/services')" class="space-y-4">{response.raw(card("Workload", workload))}{response.raw(card("Replicas and autoscale", replicas))}{response.raw(card("Load balancing", lb))}{response.raw(card("Network", grid(selectField("Expose", "expose", opts2("gateway-only", "public")) + numField("Public port base", "portBase") + textField("Port flag", "portFlag"))))}<div class="flex items-center gap-3 pt-1"><button type="submit" class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700">{saveLabel}</button><span class="text-xs text-slate-400">writes the manifest to the config store; kynatord reconciles it</span></div>{response.raw(routeModal())}</form>;
+}

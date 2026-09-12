@@ -1,0 +1,102 @@
+{
+  "Function": {
+    "prefix": "fn",
+    "body": ["fn ${1:name}(${2:params}): ${3:void} {", "\t${4:// body}", "}"],
+    "description": "Define a function"
+  },
+  "Async function": {
+    "prefix": "asyncfn",
+    "body": ["async fn ${1:name}(${2:params}): ${3:void} {", "\t${4:// body}", "}"],
+    "description": "Define an async function"
+  },
+  "Struct": {
+    "prefix": "struct",
+    "body": ["struct ${1:Name} {", "\t${2:field}: ${3:type},", "}"],
+    "description": "Define a struct (value type)"
+  },
+  "Class": {
+    "prefix": "class",
+    "body": ["class ${1:Name} {", "\t${2:field}: ${3:type},", "\tinit(${4:params}) {", "\t\t${5:// body}", "\t}", "}"],
+    "description": "Define a class (reference type)"
+  },
+  "Enum": {
+    "prefix": "enum",
+    "body": ["enum ${1:Name} {", "\t${2:Variant},", "}"],
+    "description": "Define an enum"
+  },
+  "Trait": {
+    "prefix": "trait",
+    "body": ["trait ${1:Name} {", "\tfn ${2:method}(self: ${1:Name})${3:: void};", "}"],
+    "description": "Define a trait"
+  },
+  "Impl": {
+    "prefix": "impl",
+    "body": ["impl ${1:Trait} for ${2:Type} {", "\t${3:// methods}", "}"],
+    "description": "Implement a trait for a type"
+  },
+  "Import": {
+    "prefix": "import",
+    "body": ["import ${1:module};"],
+    "description": "Import a module"
+  },
+  "Export function": {
+    "prefix": "export",
+    "body": ["export fn ${1:name}(${2:params}): ${3:void} {", "\t${4:// body}", "}"],
+    "description": "Export a function"
+  },
+  "let binding": {
+    "prefix": "let",
+    "body": ["let ${1:name} = ${2:value};"],
+    "description": "Immutable-by-default local binding"
+  },
+  "const binding": {
+    "prefix": "const",
+    "body": ["const ${1:NAME} = ${2:value};"],
+    "description": "Module-level constant"
+  },
+  "If": {
+    "prefix": "if",
+    "body": ["if (${1:condition}) {", "\t${2:// body}", "}"],
+    "description": "If statement"
+  },
+  "For": {
+    "prefix": "for",
+    "body": ["for (let ${1:i} = 0; ${1:i} < ${2:n}; ${1:i} += 1) {", "\t${3:// body}", "}"],
+    "description": "For loop"
+  },
+  "While": {
+    "prefix": "while",
+    "body": ["while (${1:condition}) {", "\t${2:// body}", "}"],
+    "description": "While loop"
+  },
+  "Switch": {
+    "prefix": "switch",
+    "body": ["switch (${1:value}) {", "\tcase ${2:pattern}: {", "\t\t${3:// body}", "\t}", "\tdefault: {", "\t\t${4:// body}", "\t}", "}"],
+    "description": "Switch statement"
+  },
+  "Match": {
+    "prefix": "match",
+    "body": ["match (${1:value}) {", "\tcase ${2:Pattern}(${3:bind}): {", "\t\t${4:// body}", "\t}", "}"],
+    "description": "Match on an enum / union"
+  },
+  "Try / catch": {
+    "prefix": "try",
+    "body": ["try {", "\t${1:// body}", "} catch (${2:e}) {", "\t${3:// handle}", "}"],
+    "description": "Try / catch"
+  },
+  "Await": {
+    "prefix": "await",
+    "body": ["await ${1:asyncCall()}"],
+    "description": "Await an async call"
+  },
+  "Spawn": {
+    "prefix": "spawn",
+    "body": ["spawn ${1:asyncCall()};"],
+    "description": "Run an async call concurrently"
+  },
+  "NSX element (.kyx)": {
+    "prefix": "nsx",
+    "body": ["<${1:div} class=\"${2:}\">", "\t${3:content}", "</${1:div}>"],
+    "description": "An NSX hypermedia element for a .kyx template"
+  }
+}

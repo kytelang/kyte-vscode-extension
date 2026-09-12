@@ -1,0 +1,9 @@
+// SYNTAX TEST "source.ky" "NSX hypermedia tags and embedded expressions"
+
+fn view(name: string): string {
+    return <p>{name}</p>;
+//  ^^^^^^ keyword.control.ky
+//         ^ punctuation.definition.tag.begin.ky
+//          ^ entity.name.tag.ky
+//            ^ punctuation.section.embedded.begin.ky
+}
